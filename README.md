@@ -6,90 +6,100 @@ This project demonstrates how to set up a Private Docker Registry using Docker a
 This project represents a real-world DevOps workflow involving containerization, image management, and secure storage.
 
 ## 🎯 Objectives
-- Understand Docker workflow
-- Create a private Docker registry
-- Implement authentication
-- Push and pull Docker images
-- Verify stored images
+- Understand Docker workflow  
+- Create a private Docker registry  
+- Implement authentication  
+- Push and pull Docker images  
+- Verify stored images  
 
 ## 🛠️ Technologies Used
-- Docker
-- Ubuntu (WSL)
-- Docker Registry
-- Apache htpasswd
+- Docker  
+- Ubuntu (WSL)  
+- Docker Registry  
+- Apache htpasswd  
 
 ## 🧠 Key Concepts
-- Docker Image: Packaged application
-- Docker Container: Running instance of image
-- Docker Registry: Storage for images
-- Tagging: Naming image for registry
+- Docker Image: Packaged application  
+- Docker Container: Running instance of image  
+- Docker Registry: Storage for images  
+- Tagging: Naming image for registry  
 
 ## 🏗️ Architecture
-Docker Hub → Local System → Private Registry → Push/Pull Images
+Docker Hub → Local System → Private Registry → Push/Pull Images  
+
+## ▶️ How to Run the Project
+1. Open Ubuntu (WSL) terminal  
+2. Install Docker  
+3. Start Docker service  
+4. Run the commands step-by-step  
+5. Ensure Docker is running  
 
 ## ⚙️ Implementation Steps
 
-1. Install Docker
-sudo apt update  
-sudo apt install docker.io -y  
-
+### 1. Install Docker
+```bash
+sudo apt update
+sudo apt install docker.io -y
 2. Start Docker
-sudo service docker start  
-
+sudo service docker start
 3. Run Registry
-docker run -d -p 5000:5000 --name registry registry:2  
-
+docker run -d -p 5000:5000 --name registry registry:2
 4. Setup Authentication
-sudo apt install apache2-utils -y  
-mkdir auth  
-htpasswd -Bc auth/htpasswd admin  
-
+sudo apt install apache2-utils -y
+mkdir auth
+htpasswd -Bc auth/htpasswd admin
 5. Run Registry with Auth
-docker rm -f registry  
-docker run -d -p 5000:5000 --name registry -v $(pwd)/auth:/auth -e REGISTRY_AUTH=htpasswd -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -e REGISTRY_AUTH_HTPASSWD_REALM="Registry Realm" registry:2  
-
+docker rm -f registry
+docker run -d -p 5000:5000 --name registry \
+-v $(pwd)/auth:/auth \
+-e REGISTRY_AUTH=htpasswd \
+-e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+-e REGISTRY_AUTH_HTPASSWD_REALM="Registry Realm" \
+registry:2
 6. Pull Image
-docker pull ubuntu  
-
+docker pull ubuntu
 7. Tag Image
-docker tag ubuntu localhost:5000/my-ubuntu  
-
+docker tag ubuntu localhost:5000/my-ubuntu
 8. Push Image
-docker push localhost:5000/my-ubuntu  
-
+docker push localhost:5000/my-ubuntu
 9. Pull from Registry
-docker pull localhost:5000/my-ubuntu  
-
+docker pull localhost:5000/my-ubuntu
 10. Verify
-curl http://localhost:5000/v2/_catalog  
+curl http://localhost:5000/v2/_catalog
 
-OR  
-curl -u admin:password http://localhost:5000/v2/_catalog  
+OR
 
-## 📸 Screenshots
-- docker ps
-- docker login
-- docker push
-- docker pull
-- curl _catalog output
+curl -u admin:password http://localhost:5000/v2/_catalog
+📸 Screenshots
+docker ps
+docker login
+docker push
+docker pull
+curl _catalog output
+📊 Output
+Private registry created
+Authentication implemented
+Image successfully pushed and pulled
+Verified using API
 
-## 📊 Output
-- Private registry created
-- Authentication implemented
-- Image successfully pushed and pulled
-- Verified using API
+Example Output:
 
-## 🔐 Security
-- Username and password authentication
-- Prevents unauthorized access
+{"repositories":["my-ubuntu"]}
+🔐 Security
+Username and password authentication
+Prevents unauthorized access
+💡 Use Cases
+Private image storage
+DevOps pipelines
+Secure deployments
+📈 Future Enhancements
+Add HTTPS
+Deploy on cloud
+CI/CD integration
+🎤 Conclusion
 
-## 💡 Use Cases
-- Private image storage
-- DevOps pipelines
-- Secure deployments
+This project demonstrates a secure and efficient way to manage Docker images using a private registry, widely used in DevOps environments.
 
-## 🎤 Conclusion
-This project demonstrates a secure and efficient way to manage Docker images using a private registry, which is widely used in DevOps environments.
+👩‍💻 Author
 
-## 👩‍💻 Author
 Sadgi
